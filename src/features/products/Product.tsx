@@ -1,21 +1,33 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
-import { selectList } from './productSlice';
+import { RootState } from '../../app/store';
 
-export function Product() {
-  const [, setFlag] = useState(true);
+export interface ProductProps {
+  id: number;
+}
 
-  const list = useAppSelector(selectList);
+const getProduct = (id: number) => (state: RootState) => {
+  console.log('calc');
+
+  return state.products.storage[id];
+};
+
+export const Product: FC<ProductProps> = ({ id }) => {
+  const [flag, setFlag] = useState(true);
+
+  const product = useAppSelector((state) => state.products.storage[id]);
+
+  const { title, price, stock } = product;
 
   const toggleState = () => setFlag((old) => !old);
 
   return (
     <div>
-      <p>Список товаров:</p>
-      {list.map((id) => (
-        <div key={id}>{id}</div>
-      ))}
-      <button onClick={toggleState}>Toggle state</button>
+      <h4>{title}</h4>
+      <strong>{price}</strong>
+      <div>{stock ? 'В наличии' : 'Не в наличии'}</div>
+      <div>Флаг: {+flag}</div>
+      <button onClick={toggleState}>Toggle</button>
     </div>
   );
-}
+};
