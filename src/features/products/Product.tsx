@@ -12,6 +12,11 @@ const getProduct = (id: number) => (state: RootState) => {
   return state.products.storage[id];
 };
 
+// const selector = useMemo(
+//   () => (state) => selectByArgIdMemoized(state, id),
+//   []
+// );
+
 export const Product: FC<ProductProps> = ({ id }) => {
   const [flag, setFlag] = useState(true);
 
